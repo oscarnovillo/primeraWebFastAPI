@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  # Servicio con Dockerfile multi-stage (optimizado)
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi-web
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./templates:/app/templates
+      - ./static:/app/static
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+  # Servicio con Dockerfile simple (descomentar para usar)
+  # web-simple:
+  #   build: 
+  #     context: .
+  #     dockerfile: Dockerfile.simple
+  #   container_name: fastapi-web-simple
+  #   ports:
+  #     - "8001:8000"
+  #   volumes:
+  #     - ./templates:/app/templates
+  #     - ./static:/app/static
+  #   environment:
+  #     - PYTHONUNBUFFERED=1
+  #   restart: unless-stopped
