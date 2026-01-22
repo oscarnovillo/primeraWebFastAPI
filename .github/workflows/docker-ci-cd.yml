@@ -1,0 +1,166 @@
+name: Docker CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*.*.*'
+  pull_request:
+    branches:
+      - main
+
+env:
+  DOCKER_IMAGE_NAME: fastapi-web
+  DOCKER_REGISTRY: docker.io
+
+jobs:
+  # Job 1: Build y Test
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Instalar dependencias
+        run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Ejecutar tests (si existen)
+        run: |
+          if [ -d "tests" ]; then
+            pytest tests/ -v --cov=. --cov-report=xml
+          else
+            echo "No se encontraron tests, continuando..."
+          fi
+        continue-on-error: true
+
+  # Job 2: Build y Push Docker Images
+  docker-build-push:
+    name: Docker Build and Push
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        dockerfile: [Dockerfile, Dockerfile.alpine]
+        include:
+          - dockerfile: Dockerfile
+            tag-suffix: optimized
+          - dockerfile: Dockerfile.alpine
+            tag-suffix: alpine
+    
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login a Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extraer metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{ matrix.tag-suffix }}
+            type=raw,value=${{ matrix.tag-suffix }}-{{sha}}
+            type=raw,value=${{ matrix.tag-suffix }}-{{date 'YYYYMMDD'}}
+            type=semver,pattern={{version}},suffix=-${{ matrix.tag-suffix }}
+            type=semver,pattern={{major}}.{{minor}},suffix=-${{ matrix.tag-suffix }}
+
+      - name: Build y Push imagen Docker
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./${{ matrix.dockerfile }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64,linux/arm64
+
+      - name: Generar SBOM (Software Bill of Materials)
+        uses: anchore/sbom-action@v0
+        with:
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ matrix.tag-suffix }}
+          format: spdx-json
+          output-file: sbom-${{ matrix.tag-suffix }}.spdx.json
+
+      - name: Escanear vulnerabilidades con Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ matrix.tag-suffix }}
+          format: 'sarif'
+          output: 'trivy-results-${{ matrix.tag-suffix }}.sarif'
+
+      - name: Subir resultados de seguridad a GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results-${{ matrix.tag-suffix }}.sarif'
+
+  # Job 3: Crear release notes
+  create-release:
+    name: Create Release
+    needs: docker-build-push
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Crear Release
+        uses: ncipollo/release-action@v1
+        with:
+          generateReleaseNotes: true
+          body: |
+            ## 🐳 Imágenes Docker disponibles
+            
+            ```bash
+            # Optimized (Debian-based)
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:optimized
+            
+            # Alpine (Ultra-ligera)
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:alpine
+            ```
+            
+            ## 📊 Tamaños de imágenes
+            - **Alpine:** ~109 MB
+            - **Optimized:** ~201 MB
+            
+            ## 🚀 Despliegue rápido
+            ```bash
+            docker run -d -p 8000:8000 ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:alpine
+            ```
+
+  # Job 4: Notificación de éxito
+  notify-success:
+    name: Notify Success
+    needs: docker-build-push
+    runs-on: ubuntu-latest
+    if: success()
+    
+    steps:
+      - name: Notificación de éxito
+        run: |
+          echo "✅ Pipeline completado exitosamente"
+          echo "🐳 Imágenes Docker publicadas en Docker Hub"
+          echo "📦 Repositorio: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}"

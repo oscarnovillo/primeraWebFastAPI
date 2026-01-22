@@ -12,3 +12,8 @@ env/
 # Docker
 *.env.local
 docker-compose.override.yml
+
+# Archivos de seguridad (no commitear)
+*.sarif
+sbom-*.json
+trivy-*.json
