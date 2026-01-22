@@ -23,6 +23,8 @@ Bienvenido a la documentación completa del proyecto **primeraWebFastAPI**.
 | **[README-DOCKER.md](README-DOCKER.md)** | Guía completa de Docker (instalación, uso, comandos) |
 | **[OPTIMIZACIONES-DOCKER.md](OPTIMIZACIONES-DOCKER.md)** | 10 técnicas de optimización implementadas |
 | **[REPORTE-COMPARATIVA-DOCKER.md](REPORTE-COMPARATIVA-DOCKER.md)** | Análisis de tamaños, tiempos y benchmarks |
+| **[DOCKER-TAGS-EXPLICACION.md](DOCKER-TAGS-EXPLICACION.md)** | Sistema de tags Docker explicado (no hay `latest`) |
+| **[AUTO-UPDATES-GUIA.md](AUTO-UPDATES-GUIA.md)** | ⭐ Watchtower, Kubernetes, Flux CD - Auto-updates |
 | **[EJEMPLOS-USO.md](EJEMPLOS-USO.md)** | Ejemplos de deployment (K8s, AWS, Azure, GCP) |
 
 ---
@@ -44,6 +46,8 @@ Bienvenido a la documentación completa del proyecto **primeraWebFastAPI**.
 | **[TRIVY-GUIA-RAPIDA.md](TRIVY-GUIA-RAPIDA.md)** | ⭐ Cómo ver resultados de seguridad (2 min) |
 | **[TRIVY-EXPLICACION.md](TRIVY-EXPLICACION.md)** | Guía completa de Trivy y escaneo de vulnerabilidades |
 | **[SBOM-EXPLICACION.md](SBOM-EXPLICACION.md)** | Qué es SBOM y para qué sirve (inventario de componentes) |
+| **[VER-REPORTES-SEGURIDAD.md](VER-REPORTES-SEGURIDAD.md)** | Cómo descargar y analizar reportes (repos privados) |
+| **[TROUBLESHOOTING-GITHUB-ACTIONS.md](TROUBLESHOOTING-GITHUB-ACTIONS.md)** | Solución de errores comunes de CI/CD |
 
 ---
 
