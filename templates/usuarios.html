@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Usuarios Registrados - Mi Primera Web FastAPI{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>👥 Usuarios Registrados</h2>
+    <p>Lista de todos los usuarios que se han registrado en la aplicación.</p>
+    
+    {% if usuarios %}
+        <p class="mensaje-exito">Total de usuarios registrados: <strong>{{ usuarios|length }}</strong></p>
+        
+        <div class="usuarios-grid">
+            {% for usuario in usuarios %}
+                <div class="usuario-card">
+                    <h3>👤 {{ usuario.nombre }}</h3>
+                    <p><strong>📧 Email:</strong> {{ usuario.email }}</p>
+                    <p><strong>🎂 Edad:</strong> {{ usuario.edad }} años</p>
+                    <p><strong>🏙️ Ciudad:</strong> {{ usuario.ciudad }}</p>
+                    <p><strong>🆔 ID:</strong> {{ usuario.id }}</p>
+                    
+                    <div class="intereses">
+                        <strong>💡 Intereses:</strong><br>
+                        {% for interes in usuario.intereses %}
+                            <span class="interes-tag">{{ interes }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="mensaje-error">
+            <h3>📭 No hay usuarios registrados</h3>
+            <p>Aún no se ha registrado ningún usuario en la aplicación.</p>
+            <p><a href="/registro" class="btn">✍️ ¡Sé el primero en registrarte!</a></p>
+        </div>
+    {% endif %}
+    
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="/registro" class="btn btn-success">➕ Registrar nuevo usuario</a>
+        <a href="/" class="btn">🏠 Volver al inicio</a>
+    </div>
+</div>
+
+<div class="card">
+    <h2>🎓 Lo que aprenderás aquí</h2>
+    <ul>
+        <li><strong>Listado de datos:</strong> Mostrar todos los elementos de una lista</li>        <li><strong>Condicionales en plantillas:</strong> <code>{{ "{%" }} if usuarios {{ "%}" }}</code></li>
+        <li><strong>Bucles en Jinja2:</strong> <code>{{ "{%" }} for usuario in usuarios {{ "%}" }}</code></li><li><strong>Filtros de plantilla:</strong> <code>{{ "{{" }} usuarios|length {{ "}}" }}</code></li>
+        <li><strong>Iteración anidada:</strong> <code>{{ "{%" }} for interes in usuario.intereses {{ "%}" }}</code></li>
+        <li><strong>Acceso a propiedades:</strong> <code>{{ "{{" }} usuario.nombre {{ "}}" }}</code></li>
+    </ul>
+    
+    <h3>📊 Estadísticas actuales:</h3>
+    <div class="filtros">
+        {% if usuarios %}
+            <p><strong>Total usuarios:</strong> {{ usuarios|length }}</p>
+            <p><strong>Ciudades representadas:</strong> 
+                {% set ciudades = usuarios|map(attribute='ciudad')|list|unique|list %}
+                {{ ciudades|length }} ({{ ciudades|join(', ') }})
+            </p>
+            <p><strong>Edad promedio:</strong> 
+                {% set edades = usuarios|map(attribute='edad')|list %}
+                {{ "%.1f"|format(edades|sum / edades|length) }} años
+            </p>
+        {% else %}
+            <p>No hay datos para mostrar estadísticas.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card">
+    <h2>🔧 Funcionalidades demostradas</h2>
+    <ul>
+        <li><strong>Persistencia de datos:</strong> Los usuarios se mantienen en memoria durante la sesión</li>
+        <li><strong>Renderizado condicional:</strong> Diferente contenido si hay o no usuarios</li>
+        <li><strong>Layouts responsivos:</strong> Grid que se adapta al tamaño de pantalla</li>
+        <li><strong>Estilado dinámico:</strong> Tags de colores para los intereses</li>
+        <li><strong>Navegación fluida:</strong> Enlaces para crear más usuarios</li>
+    </ul>
+</div>
+{% endblock %}

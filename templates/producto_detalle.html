@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}{{ producto.nombre }} - Mi Primera Web FastAPI{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>📦 Detalles del Producto</h2>
+    <p>Ejemplo de parámetros en la URL (path parameters).</p>
+    
+    <div class="producto-card" style="max-width: 500px; margin: 2rem auto;">
+        <h3>{{ producto.nombre }}</h3>
+        <p class="precio">💰 {{ "%.2f"|format(producto.precio) }}€</p>
+        <span class="categoria">{{ producto.categoria }}</span>
+        
+        <div style="margin: 2rem 0;">
+            <h4>Información adicional:</h4>
+            <ul>
+                <li><strong>ID del producto:</strong> {{ producto.id }}</li>
+                <li><strong>Categoría:</strong> {{ producto.categoria }}</li>
+                <li><strong>Precio:</strong> {{ producto.precio }}€</li>
+            </ul>
+        </div>
+        
+        <div>
+            <a href="/productos" class="btn">← Volver a productos</a>
+            <a href="/productos?categoria={{ producto.categoria }}" class="btn btn-success">
+                Ver más de {{ producto.categoria }}
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>🎓 Lo que aprenderás aquí</h2>
+    <ul>
+        <li><strong>Path parameters:</strong> <code>/producto/{producto_id}</code></li>
+        <li><strong>Validación de tipos:</strong> <code>producto_id: int</code></li>
+        <li><strong>Búsqueda en listas:</strong> <code>next()</code> function con generador</li>
+        <li><strong>Manejo de errores:</strong> Redirección a página de error si no existe</li>
+        <li><strong>Enlaces dinámicos:</strong> URLs generadas con datos del producto</li>
+    </ul>
+    
+    <p><strong>Prueba estos enlaces para ver el manejo de errores:</strong></p>
+    <ul>
+        <li><a href="/producto/1">Producto 1 (existe)</a></li>
+        <li><a href="/producto/2">Producto 2 (existe)</a></li>
+        <li><a href="/producto/3">Producto 3 (existe)</a></li>
+        <li><a href="/producto/999">Producto 999 (no existe - verás error)</a></li>
+    </ul>
+</div>
+
+<div class="card">
+    <h2>🔗 Otros productos</h2>
+    <div class="productos-grid">
+        <div class="producto-card">
+            <h4><a href="/producto/1">Portátil</a></h4>
+            <p>Tecnología - 899.99€</p>
+        </div>
+        <div class="producto-card">
+            <h4><a href="/producto/2">Mesa</a></h4>
+            <p>Muebles - 199.50€</p>
+        </div>
+        <div class="producto-card">
+            <h4><a href="/producto/3">Libro</a></h4>
+            <p>Educación - 15.99€</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

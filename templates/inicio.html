@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Mi Primera Web FastAPI{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>{{ titulo }}</h2>
+    <p class="mensaje-exito">{{ mensaje }}</p>
+    
+    <h3>¿Qué puedes hacer aquí?</h3>
+    <ul>
+        <li><strong>Navegar:</strong> Explora las diferentes páginas usando el menú superior</li>
+        <li><strong>Ver productos:</strong> Lista de productos con filtros por categoría (parámetros GET)</li>
+        <li><strong>Contactar:</strong> Formulario de contacto (ejemplo de POST)</li>
+        <li><strong>Registrarte:</strong> Formulario de registro con múltiples campos</li>
+        <li><strong>Buscar:</strong> Busca productos con filtros de precio</li>
+    </ul>
+    
+    <h3>Características técnicas que aprenderás:</h3>
+    <div class="productos-grid">
+        <div class="producto-card">
+            <h4>🔗 Parámetros GET</h4>
+            <p>Filtros en la URL como <code>/productos?categoria=Tecnologia</code></p>
+        </div>
+        <div class="producto-card">
+            <h4>📝 Formularios POST</h4>
+            <p>Envío de datos mediante formularios HTML</p>
+        </div>
+        <div class="producto-card">
+            <h4>🛣️ Parámetros de ruta</h4>
+            <p>URLs dinámicas como <code>/producto/1</code></p>
+        </div>
+        <div class="producto-card">
+            <h4>🎨 Plantillas Jinja2</h4>
+            <p>Sistema de plantillas con herencia y variables</p>
+        </div>
+    </div>
+    
+    <p><a href="/navegacion" class="btn">🚀 ¡Empezar a explorar!</a></p>
+</div>
+{% endblock %}

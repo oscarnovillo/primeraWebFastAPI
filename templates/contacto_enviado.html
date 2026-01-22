@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Mensaje Enviado - Mi Primera Web FastAPI{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="mensaje-exito">
+        <h2>✅ ¡Mensaje enviado correctamente!</h2>
+        <p>Gracias por contactarnos, <strong>{{ nombre }}</strong>. Hemos recibido tu mensaje.</p>
+    </div>
+    
+    <h3>📋 Resumen de tu mensaje:</h3>
+    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+        <p><strong>Nombre:</strong> {{ nombre }}</p>
+        <p><strong>Email:</strong> {{ email }}</p>
+        <p><strong>Mensaje:</strong></p>
+        <blockquote style="border-left: 4px solid #3498db; padding-left: 1rem; margin: 0.5rem 0;">
+            {{ mensaje }}
+        </blockquote>
+    </div>
+    
+    <div style="margin-top: 2rem;">
+        <a href="/contacto" class="btn">📧 Enviar otro mensaje</a>
+        <a href="/" class="btn btn-success">🏠 Volver al inicio</a>
+    </div>
+</div>
+
+<div class="card">
+    <h2>🎓 Lo que acabas de aprender</h2>
+    <ul>
+        <li><strong>Procesamiento POST:</strong> Los datos del formulario llegaron al servidor</li>
+        <li><strong>Validación automática:</strong> FastAPI validó que todos los campos requeridos estuvieran presentes</li>
+        <li><strong>Paso de variables:</strong> Los datos se pasaron desde el endpoint a la plantilla</li>
+        <li><strong>Renderizado dinámico:</strong> La plantilla muestra los datos específicos del usuario</li>
+        <li><strong>Flujo completo:</strong> Formulario → POST → Procesamiento → Respuesta</li>
+    </ul>
+    
+    <h3>🔧 En el backend ocurrió esto:</h3>
+    <ol>
+        <li>FastAPI recibió el POST a <code>/contacto</code></li>
+        <li>Extrajo los datos del formulario usando <code>Form(...)</code></li>
+        <li>Validó que todos los campos requeridos estuvieran presentes</li>
+        <li>Pasó los datos a la plantilla <code>contacto_enviado.html</code></li>
+        <li>Jinja2 renderizó la página con tus datos específicos</li>
+    </ol>
+</div>
+
+<div class="card">
+    <h2>🚀 Próximos pasos</h2>
+    <p>En una aplicación real, aquí típicamente harías:</p>
+    <ul>
+        <li>💾 Guardar el mensaje en una base de datos</li>
+        <li>📧 Enviar un email de notificación</li>
+        <li>🔔 Crear una notificación para los administradores</li>
+        <li>📊 Registrar métricas de contactos recibidos</li>
+        <li>✅ Enviar email de confirmación al usuario</li>
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Registro Exitoso - Mi Primera Web FastAPI{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="mensaje-exito">
+        <h2>🎉 ¡Registro completado con éxito!</h2>
+        <p>Bienvenido/a <strong>{{ usuario.nombre }}</strong>, tu cuenta ha sido creada.</p>
+    </div>
+    
+    <h3>📋 Resumen de tu perfil:</h3>
+    <div class="usuario-card" style="max-width: 500px; margin: 2rem auto;">
+        <h3>👤 {{ usuario.nombre }}</h3>
+        <p><strong>📧 Email:</strong> {{ usuario.email }}</p>
+        <p><strong>🎂 Edad:</strong> {{ usuario.edad }} años</p>
+        <p><strong>🏙️ Ciudad:</strong> {{ usuario.ciudad }}</p>
+        <p><strong>🆔 ID de usuario:</strong> {{ usuario.id }}</p>
+        
+        <div class="intereses">
+            <strong>💡 Intereses:</strong><br>
+            {% for interes in usuario.intereses %}
+                <span class="interes-tag">{{ interes }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="/usuarios" class="btn">👥 Ver todos los usuarios</a>
+        <a href="/registro" class="btn btn-success">➕ Registrar otro usuario</a>
+        <a href="/" class="btn">🏠 Volver al inicio</a>
+    </div>
+</div>
+
+<div class="card">
+    <h2>🎓 Lo que acabas de aprender</h2>
+    <ul>
+        <li><strong>Procesamiento de formularios complejos:</strong> Múltiples tipos de datos</li>
+        <li><strong>Conversión automática de tipos:</strong> <code>edad: int</code> convierte el string a entero</li>
+        <li><strong>Manejo de listas:</strong> Los checkboxes se procesan como lista</li>
+        <li><strong>Creación de objetos:</strong> Diccionario con los datos del usuario</li>
+        <li><strong>Almacenamiento en memoria:</strong> Agregar a la lista <code>usuarios_db</code></li>
+        <li><strong>IDs autoincrementales:</strong> <code>len(usuarios_db) + 1</code></li>
+    </ul>
+    
+    <h3>🔧 Proceso completo:</h3>
+    <ol>
+        <li><strong>Usuario llena formulario</strong> con diferentes tipos de campos</li>
+        <li><strong>HTML5 valida</strong> campos requeridos y formatos</li>
+        <li><strong>FastAPI recibe POST</strong> y extrae datos con <code>Form(...)</code></li>
+        <li><strong>Conversión automática</strong> de tipos (string → int para edad)</li>
+        <li><strong>Creación de objeto usuario</strong> con ID único</li>
+        <li><strong>Almacenamiento</strong> en la lista de usuarios</li>
+        <li><strong>Respuesta personalizada</strong> con los datos del nuevo usuario</li>
+    </ol>
+</div>
+
+<div class="card">
+    <h2>🔍 Detalles técnicos interesantes</h2>
+    <div class="filtros">
+        <h3>Manejo de checkboxes múltiples:</h3>
+        <p>Cuando tienes varios checkboxes con el mismo <code>name="intereses"</code>, FastAPI los recibe como una lista automáticamente.</p>
+        
+        <h3>Validación de tipos:</h3>
+        <p>El campo edad se define como <code>edad: int = Form(...)</code>, por lo que FastAPI convierte automáticamente el string del formulario a entero.</p>
+        
+        <h3>Base de datos en memoria:</h3>
+        <p>Tu usuario se ha guardado en <code>usuarios_db</code>, una lista que simula una base de datos. En una app real usarías PostgreSQL, MongoDB, etc.</p>
+    </div>
+</div>
+{% endblock %}

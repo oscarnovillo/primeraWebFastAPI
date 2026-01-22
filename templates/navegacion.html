@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Navegación - Mi Primera Web FastAPI{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>🧭 Guía de Navegación</h2>
+    <p>Esta página te muestra todas las funcionalidades disponibles en nuestra aplicación web de ejemplo.</p>
+    
+    <div class="productos-grid">
+        <div class="producto-card">
+            <h3>📦 Productos</h3>
+            <p>Lista todos los productos disponibles. Puedes filtrar por categoría usando parámetros GET.</p>
+            <p><strong>Ejemplos de URLs:</strong></p>
+            <ul>
+                <li><a href="/productos">Todos los productos</a></li>
+                <li><a href="/productos?categoria=Tecnología">Solo tecnología</a></li>
+                <li><a href="/productos?categoria=Muebles">Solo muebles</a></li>
+            </ul>
+            <p><a href="/productos" class="btn">Ver productos</a></p>
+        </div>
+        
+        <div class="producto-card">
+            <h3>🔍 Producto individual</h3>
+            <p>Ver detalles de un producto específico usando parámetros en la URL.</p>
+            <p><strong>Ejemplos:</strong></p>
+            <ul>
+                <li><a href="/producto/1">Producto ID 1</a></li>
+                <li><a href="/producto/2">Producto ID 2</a></li>
+                <li><a href="/producto/3">Producto ID 3</a></li>
+                <li><a href="/producto/999">Producto inexistente (error)</a></li>
+            </ul>
+        </div>
+        
+        <div class="producto-card">
+            <h3>📧 Formulario de Contacto</h3>
+            <p>Ejemplo de formulario POST simple con validación de campos obligatorios.</p>
+            <p><strong>Campos:</strong> Nombre, Email, Mensaje</p>
+            <p><a href="/contacto" class="btn">Ir a contacto</a></p>
+        </div>
+        
+        <div class="producto-card">
+            <h3>✍️ Formulario de Registro</h3>
+            <p>Formulario POST más complejo con diferentes tipos de campos.</p>
+            <p><strong>Incluye:</strong> Texto, números, selección múltiple, checkboxes</p>
+            <p><a href="/registro" class="btn">Registrarse</a></p>
+        </div>
+        
+        <div class="producto-card">
+            <h3>👥 Lista de Usuarios</h3>
+            <p>Ver todos los usuarios que se han registrado en la aplicación.</p>
+            <p><a href="/usuarios" class="btn">Ver usuarios</a></p>
+        </div>
+        
+        <div class="producto-card">
+            <h3>🔍 Búsqueda Avanzada</h3>
+            <p>Formulario de búsqueda con múltiples parámetros para filtrar productos.</p>
+            <p><strong>Incluye:</strong> Término de búsqueda, rango de precios</p>
+            <form action="/buscar" method="post" style="margin-top: 1rem;">
+                <div class="form-group">
+                    <input type="text" name="termino" placeholder="Buscar producto..." required>
+                </div>
+                <button type="submit" class="btn">Buscar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>🎓 Conceptos que aprenderás</h2>
+    <div class="filtros">
+        <h3>Métodos HTTP y parámetros:</h3>
+        <ul>
+            <li><strong>GET con query parameters:</strong> <code>/productos?categoria=Tecnología</code></li>
+            <li><strong>GET con path parameters:</strong> <code>/producto/{id}</code></li>
+            <li><strong>POST con formularios:</strong> Envío de datos desde formularios HTML</li>
+            <li><strong>Formularios complejos:</strong> Múltiples tipos de campos y validación</li>
+        </ul>
+        
+        <h3>Plantillas Jinja2:</h3>        <ul>
+            <li><strong>Herencia de plantillas:</strong> Base template + extensiones</li>
+            <li><strong>Variables y expresiones:</strong> <code>{{ "{{" }} variable {{ "}}" }}</code></li>
+            <li><strong>Estructuras de control:</strong> <code>{{ "{%" }} if {{ "%}" }}</code>, <code>{{ "{%" }} for {{ "%}" }}</code></li>
+            <li><strong>URLs dinámicas:</strong> <code>{{ "{{" }} url_for() {{ "}}" }}</code></li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Contacto - Mi Primera Web FastAPI{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>📧 Formulario de Contacto</h2>
+    <p>Ejemplo de formulario POST simple con validación de campos obligatorios.</p>
+    
+    <form action="/contacto" method="post">
+        <div class="form-group">
+            <label for="nombre">Nombre completo *</label>
+            <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre completo">
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required placeholder="tu@email.com">
+        </div>
+        
+        <div class="form-group">
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" name="mensaje" rows="5" required placeholder="Escribe tu mensaje aquí..."></textarea>
+        </div>
+        
+        <button type="submit" class="btn">📤 Enviar mensaje</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>🎓 Lo que aprenderás aquí</h2>
+    <ul>
+        <li><strong>Formularios POST:</strong> <code>method="post"</code> en HTML</li>
+        <li><strong>Campos obligatorios:</strong> <code>required</code> en inputs</li>
+        <li><strong>Validación HTML5:</strong> <code>type="email"</code></li>
+        <li><strong>FastAPI Form:</strong> <code>nombre: str = Form(...)</code></li>
+        <li><strong>Validación backend:</strong> Campos obligatorios con <code>Form(...)</code></li>
+        <li><strong>Redirección POST:</strong> Procesar y mostrar resultado</li>
+    </ul>
+    
+    <h3>Estructura del endpoint POST:</h3>
+    <pre style="background: #f8f9fa; padding: 1rem; border-radius: 4px; overflow-x: auto;">
+@app.post("/contacto")
+async def procesar_contacto(
+    request: Request,
+    nombre: str = Form(...),
+    email: str = Form(...),
+    mensaje: str = Form(...)
+):
+    # Procesar los datos del formulario
+    return templates.TemplateResponse("contacto_enviado.html", {
+        "request": request,
+        "nombre": nombre,
+        "email": email,
+        "mensaje": mensaje
+    })</pre>
+</div>
+
+<div class="card">
+    <h2>💡 Consejos</h2>
+    <ul>
+        <li>Los campos marcados con * son obligatorios</li>
+        <li>El email se valida automáticamente por HTML5</li>
+        <li>Al enviar verás los datos que recibió el servidor</li>
+        <li>En una aplicación real, aquí enviarías un email o guardarías en base de datos</li>
+    </ul>
+</div>
+{% endblock %}

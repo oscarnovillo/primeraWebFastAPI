@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Error - Mi Primera Web FastAPI{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="mensaje-error">
+        <h2>❌ Error</h2>
+        <p>{{ mensaje }}</p>
+        
+        <div style="margin-top: 2rem;">
+            <a href="/" class="btn">🏠 Ir al inicio</a>
+            <a href="/productos" class="btn">📦 Ver productos</a>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>🎓 Manejo de errores</h2>
+    <p>Esta página demuestra cómo manejar errores cuando un recurso no existe.</p>
+    <ul>
+        <li><strong>Validación de datos:</strong> Verificar si el producto existe</li>
+        <li><strong>Respuestas de error:</strong> Mostrar mensajes informativos</li>
+        <li><strong>Navegación de recuperación:</strong> Enlaces para volver al contenido válido</li>
+    </ul>
+</div>
+{% endblock %}

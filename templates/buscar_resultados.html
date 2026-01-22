@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Resultados de Búsqueda - Mi Primera Web FastAPI{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>🔍 Resultados de Búsqueda</h2>
+    <p>Búsqueda realizada con parámetros POST desde formulario.</p>
+    
+    <div class="filtros">
+        <h3>📋 Parámetros de búsqueda utilizados:</h3>
+        <ul>
+            <li><strong>Término:</strong> "{{ termino }}"</li>
+            {% if precio_min %}
+                <li><strong>Precio mínimo:</strong> {{ precio_min }}€</li>
+            {% endif %}
+            {% if precio_max %}
+                <li><strong>Precio máximo:</strong> {{ precio_max }}€</li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+<div class="card">
+    <h2>📦 Productos encontrados</h2>
+    
+    {% if resultados %}
+        <p class="mensaje-exito">Se encontraron <strong>{{ resultados|length }}</strong> productos que coinciden con tu búsqueda.</p>
+        
+        <div class="productos-grid">
+            {% for producto in resultados %}
+                <div class="producto-card">
+                    <h3>{{ producto.nombre }}</h3>
+                    <p class="precio">💰 {{ "%.2f"|format(producto.precio) }}€</p>
+                    <span class="categoria">{{ producto.categoria }}</span>
+                    <div style="margin-top: 1rem;">
+                        <a href="/producto/{{ producto.id }}" class="btn">Ver detalles</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="mensaje-error">
+            <h3>❌ No se encontraron productos</h3>
+            <p>No hay productos que coincidan con los criterios de búsqueda:</p>
+            <ul>
+                <li>Término: "<strong>{{ termino }}</strong>"</li>
+                {% if precio_min or precio_max %}
+                    <li>Rango de precio: 
+                        {% if precio_min %}{{ precio_min }}€{% else %}0€{% endif %} - 
+                        {% if precio_max %}{{ precio_max }}€{% else %}∞{% endif %}
+                    </li>
+                {% endif %}
+            </ul>
+            
+            <h4>💡 Sugerencias:</h4>
+            <ul>
+                <li>Prueba con términos más generales</li>
+                <li>Amplía el rango de precios</li>
+                <li>Revisa la ortografía</li>
+                <li>Prueba buscando: "portátil", "mesa" o "libro"</li>
+            </ul>
+        </div>
+    {% endif %}
+    
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="/productos" class="btn">📦 Ver todos los productos</a>
+        <a href="/" class="btn btn-success">🏠 Volver al inicio</a>
+    </div>
+</div>
+
+<div class="card">
+    <h2>🔍 Nueva búsqueda</h2>
+    <form action="/buscar" method="post">
+        <div class="filtros-inline">
+            <div class="form-group">
+                <label for="termino">Término de búsqueda:</label>
+                <input type="text" id="termino" name="termino" value="{{ termino }}" placeholder="Nombre del producto..." required>
+            </div>
+            <div class="form-group">
+                <label for="precio_min">Precio mínimo (€):</label>
+                <input type="number" id="precio_min" name="precio_min" value="{{ precio_min or '' }}" step="0.01" min="0" placeholder="0.00">
+            </div>
+            <div class="form-group">
+                <label for="precio_max">Precio máximo (€):</label>
+                <input type="number" id="precio_max" name="precio_max" value="{{ precio_max or '' }}" step="0.01" min="0" placeholder="999.99">
+            </div>
+            <div class="form-group">
+                <label>&nbsp;</label>
+                <button type="submit" class="btn">🔍 Buscar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <h2>🎓 Lo que aprenderás aquí</h2>
+    <ul>
+        <li><strong>Formularios POST con múltiples parámetros:</strong> Texto y números</li>
+        <li><strong>Parámetros opcionales:</strong> <code>Optional[float] = Form(None)</code></li>
+        <li><strong>Búsqueda en texto:</strong> <code>termino.lower() in producto.nombre.lower()</code></li>
+        <li><strong>Filtrado por rangos:</strong> Comparaciones numéricas con precios</li>
+        <li><strong>Combinación de filtros:</strong> Múltiples condiciones AND</li>
+        <li><strong>Preservación de valores:</strong> Mantener datos del formulario en nueva búsqueda</li>
+    </ul>
+    
+    <h3>🔧 Lógica de búsqueda:</h3>
+    <pre style="background: #f8f9fa; padding: 1rem; border-radius: 4px; overflow-x: auto;">
+for producto in productos_db:
+    # Buscar por nombre
+    if termino.lower() in producto["nombre"].lower():
+        # Filtrar por precio mínimo
+        if precio_min and producto["precio"] < precio_min:
+            continue
+        # Filtrar por precio máximo
+        if precio_max and producto["precio"] > precio_max:
+            continue
+        resultados.append(producto)</pre>
+</div>
+
+<div class="card">
+    <h2>🧪 Pruebas sugeridas</h2>
+    <div class="filtros">
+        <h3>Búsquedas que encontrarán resultados:</h3>
+        <ul>
+            <li><strong>"portátil"</strong> - Encontrará el portátil</li>
+            <li><strong>"mesa"</strong> - Encontrará la mesa</li>
+            <li><strong>"libro"</strong> - Encontrará el libro</li>
+            <li><strong>Precio 0-200€</strong> - Mesa y libro</li>
+            <li><strong>Precio 800-1000€</strong> - Solo el portátil</li>
+        </ul>
+        
+        <h3>Búsquedas que NO encontrarán resultados:</h3>
+        <ul>
+            <li><strong>"teléfono"</strong> - No existe ese producto</li>
+            <li><strong>Precio 1000-2000€</strong> - Ningún producto en ese rango</li>
+            <li><strong>"mesa" con precio 500-1000€</strong> - La mesa es más barata</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

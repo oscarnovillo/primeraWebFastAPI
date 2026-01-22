@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Productos - Mi Primera Web FastAPI{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>📦 Catálogo de Productos</h2>
+    <p>Ejemplo de parámetros GET para filtrar contenido.</p>
+    
+    <!-- Filtros -->
+    <div class="filtros">
+        <h3>🔍 Filtrar por categoría:</h3>
+        <div class="filtros-inline">
+            <a href="/productos" class="btn {% if not categoria_seleccionada %}btn-success{% endif %}">
+                Todas las categorías
+            </a>
+            {% for categoria in categorias %}
+                <a href="/productos?categoria={{ categoria }}" 
+                   class="btn {% if categoria_seleccionada == categoria %}btn-success{% endif %}">
+                    {{ categoria }}
+                </a>
+            {% endfor %}
+        </div>
+        
+        {% if categoria_seleccionada %}
+            <p class="mensaje-exito">
+                Mostrando productos de la categoría: <strong>{{ categoria_seleccionada }}</strong>
+            </p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card">
+    <h2>Productos disponibles ({{ productos|length }})</h2>
+    
+    {% if productos %}
+        <div class="productos-grid">
+            {% for producto in productos %}
+                <div class="producto-card">
+                    <h3>{{ producto.nombre }}</h3>
+                    <p class="precio">💰 {{ "%.2f"|format(producto.precio) }}€</p>
+                    <span class="categoria">{{ producto.categoria }}</span>
+                    <div style="margin-top: 1rem;">
+                        <a href="/producto/{{ producto.id }}" class="btn">Ver detalles</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="mensaje-error">
+            <p>No se encontraron productos{% if categoria_seleccionada %} en la categoría "{{ categoria_seleccionada }}"{% endif %}.</p>
+        </div>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>🔍 Búsqueda avanzada</h2>
+    <form action="/buscar" method="post">
+        <div class="filtros-inline">
+            <div class="form-group">
+                <label for="termino">Término de búsqueda:</label>
+                <input type="text" id="termino" name="termino" placeholder="Nombre del producto..." required>
+            </div>
+            <div class="form-group">
+                <label for="precio_min">Precio mínimo (€):</label>
+                <input type="number" id="precio_min" name="precio_min" step="0.01" min="0" placeholder="0.00">
+            </div>
+            <div class="form-group">
+                <label for="precio_max">Precio máximo (€):</label>
+                <input type="number" id="precio_max" name="precio_max" step="0.01" min="0" placeholder="999.99">
+            </div>
+            <div class="form-group">
+                <label>&nbsp;</label>
+                <button type="submit" class="btn">Buscar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <h2>🎓 Lo que aprenderás aquí</h2>
+    <ul>
+        <li><strong>Parámetros GET opcionales:</strong> <code>categoria: Optional[str] = None</code></li>
+        <li><strong>Filtrado de datos:</strong> Usar list comprehensions para filtrar</li>        <li><strong>Plantillas con condicionales:</strong> <code>{{ "{%" }} if categoria_seleccionada {{ "%}" }}</code></li>
+        <li><strong>Bucles en plantillas:</strong> <code>{{ "{%" }} for producto in productos {{ "%}" }}</code></li>
+        <li><strong>Formateo de números:</strong> <code>{{ "{{" }} "%.2f"|format(precio) {{ "}}" }}</code></li>
+        <li><strong>Enlaces dinámicos:</strong> URLs generadas con variables</li>
+    </ul>
+    
+    <p><strong>Ejemplos de URLs que puedes probar:</strong></p>
+    <ul>
+        <li><code>/productos</code> - Todos los productos</li>
+        <li><code>/productos?categoria=Tecnología</code> - Solo tecnología</li>
+        <li><code>/productos?categoria=Muebles</code> - Solo muebles</li>
+        <li><code>/productos?categoria=Educación</code> - Solo educación</li>
+    </ul>
+</div>
+{% endblock %}

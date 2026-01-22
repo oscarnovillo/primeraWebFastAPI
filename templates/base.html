@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mi Primera Web FastAPI{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🚀 Mi Primera Web FastAPI</h1>
+            <p>Aprendiendo FastAPI con Jinja2 Templates</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="/">🏠 Inicio</a></li>
+                <li><a href="/navegacion">🧭 Navegación</a></li>
+                <li><a href="/productos">📦 Productos</a></li>
+                <li><a href="/contacto">📧 Contacto</a></li>
+                <li><a href="/registro">✍️ Registro</a></li>
+                <li><a href="/usuarios">👥 Usuarios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Mi Primera Web FastAPI - Ejemplo educativo ASIR</p>
+        </div>
+    </footer>
+</body>
+</html>

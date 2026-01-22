@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Registro - Mi Primera Web FastAPI{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>✍️ Formulario de Registro</h2>
+    <p>Ejemplo de formulario POST complejo con diferentes tipos de campos.</p>
+    
+    <form action="/registro" method="post">
+        <div class="form-group">
+            <label for="nombre">Nombre completo *</label>
+            <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre completo">
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required placeholder="tu@email.com">
+        </div>
+        
+        <div class="form-group">
+            <label for="edad">Edad *</label>
+            <input type="number" id="edad" name="edad" min="16" max="120" required placeholder="25">
+        </div>
+        
+        <div class="form-group">
+            <label for="ciudad">Ciudad *</label>
+            <select id="ciudad" name="ciudad" required>
+                <option value="">Selecciona tu ciudad</option>
+                <option value="Madrid">Madrid</option>
+                <option value="Barcelona">Barcelona</option>
+                <option value="Valencia">Valencia</option>
+                <option value="Sevilla">Sevilla</option>
+                <option value="Zaragoza">Zaragoza</option>
+                <option value="Málaga">Málaga</option>
+                <option value="Otra">Otra ciudad</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Intereses (puedes seleccionar varios) *</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="programacion" name="intereses" value="Programación">
+                    <label for="programacion">Programación</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="ciberseguridad" name="intereses" value="Ciberseguridad">
+                    <label for="ciberseguridad">Ciberseguridad</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="redes" name="intereses" value="Redes">
+                    <label for="redes">Redes</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="bases_datos" name="intereses" value="Bases de datos">
+                    <label for="bases_datos">Bases de datos</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="hardware" name="intereses" value="Hardware">
+                    <label for="hardware">Hardware</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="diseño" name="intereses" value="Diseño web">
+                    <label for="diseño">Diseño web</label>
+                </div>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn">📝 Registrarse</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>🎓 Lo que aprenderás aquí</h2>
+    <ul>
+        <li><strong>Múltiples tipos de campos:</strong> text, email, number, select, checkbox</li>
+        <li><strong>Validación HTML5:</strong> <code>required</code>, <code>min</code>, <code>max</code></li>
+        <li><strong>Campos de selección múltiple:</strong> Checkboxes con el mismo <code>name</code></li>
+        <li><strong>FastAPI Form con tipos:</strong> <code>edad: int = Form(...)</code></li>
+        <li><strong>Listas en formularios:</strong> <code>intereses: list = Form(...)</code></li>
+        <li><strong>Almacenamiento en memoria:</strong> Guardar datos en una lista</li>
+    </ul>
+    
+    <h3>Estructura del endpoint POST:</h3>
+    <pre style="background: #f8f9fa; padding: 1rem; border-radius: 4px; overflow-x: auto;">
+@app.post("/registro")
+async def procesar_registro(
+    request: Request,
+    nombre: str = Form(...),
+    email: str = Form(...),
+    edad: int = Form(...),
+    ciudad: str = Form(...),
+    intereses: list = Form(...)
+):
+    # Crear nuevo usuario
+    nuevo_usuario = {
+        "id": len(usuarios_db) + 1,
+        "nombre": nombre,
+        "email": email,
+        "edad": edad,
+        "ciudad": ciudad,
+        "intereses": intereses
+    }
+    usuarios_db.append(nuevo_usuario)
+    return templates.TemplateResponse("registro_exitoso.html", {...})</pre>
+</div>
+
+<div class="card">
+    <h2>💡 Características avanzadas</h2>
+    <ul>
+        <li><strong>Validación de edad:</strong> Mínimo 16 años, máximo 120</li>
+        <li><strong>Campo email:</strong> Validación automática de formato</li>
+        <li><strong>Selección múltiple:</strong> Los checkboxes permiten varios valores</li>
+        <li><strong>Campos obligatorios:</strong> Todos los campos son requeridos</li>
+        <li><strong>Almacenamiento persistente:</strong> Los usuarios se guardan en memoria</li>
+    </ul>
+    
+    <p>Después del registro podrás ver tu usuario en la <a href="/usuarios">lista de usuarios</a>.</p>
+</div>
+{% endblock %}
