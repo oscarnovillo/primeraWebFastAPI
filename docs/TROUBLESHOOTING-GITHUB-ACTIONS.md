@@ -59,6 +59,37 @@ Después de hacer push con los permisos agregados:
 
 ---
 
+## ❌ Error: "Resource not accessible by integration" (Create Release)
+
+### **Síntoma**
+```
+Error: Resource not accessible by integration
+Error: HttpError: Resource not accessible by integration
+    at createRelease (...)
+```
+
+### **Causa**
+Falta el permiso `contents: write` para crear releases.
+
+### **Solución** ✅
+
+Agregar la sección `permissions` al inicio del workflow:
+
+```yaml
+# En .github/workflows/docker-ci-cd.yml
+permissions:
+  contents: write         # ← AGREGAR ESTO (era "read")
+  security-events: write
+  actions: read
+```
+
+### **Explicación**
+
+- `contents: read` → Solo puede leer código
+- `contents: write` → Puede crear releases, tags, commits
+
+---
+
 ## ❌ Error: "Invalid username or password"
 
 ### **Síntoma**

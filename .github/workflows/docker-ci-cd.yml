@@ -10,11 +10,11 @@ on:
     branches:
       - main
 
-# Permisos necesarios para subir resultados a GitHub Security
+# Permisos necesarios para el pipeline
 permissions:
-  contents: read
-  security-events: write  # ← CLAVE: Permite escribir en Security tab
-  actions: read
+  contents: write         # ← CLAVE: Permite crear releases y tags
+  security-events: write  # Permite subir resultados SARIF a Security tab
+  actions: read           # Permite leer artifacts de otros workflows
 
 env:
   DOCKER_IMAGE_NAME: fastapi-web
