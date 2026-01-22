@@ -10,6 +10,12 @@ on:
     branches:
       - main
 
+# Permisos necesarios para subir resultados a GitHub Security
+permissions:
+  contents: read
+  security-events: write  # ← CLAVE: Permite escribir en Security tab
+  actions: read
+
 env:
   DOCKER_IMAGE_NAME: fastapi-web
   DOCKER_REGISTRY: docker.io
