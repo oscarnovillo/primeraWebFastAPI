@@ -1,7 +1,7 @@
 # ============================================
 # Stage 1: Builder - Instalar dependencias
 # ============================================
-FROM python:3.11-slim as builder
+FROM python:3.11-slim AS builder
 
 # Establecer el directorio de trabajo
 WORKDIR /app
